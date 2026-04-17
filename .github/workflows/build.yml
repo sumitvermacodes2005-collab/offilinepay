@@ -8,10 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: offilinepay   # ✅ IMPORTANT
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -26,10 +22,10 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: chmod +x offilinepay/gradlew
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: offilinepay/gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
