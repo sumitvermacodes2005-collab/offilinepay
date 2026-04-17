@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Splash-only platform theme. The real Compose Material 3 theme is applied
+         inside MainActivity via OfflinePayTheme {}. We use the modern SplashScreen
+         compatible parent so nothing flashes white before Compose mounts. -->
+    <style name="Theme.OfflinePay" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/ic_launcher_background</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+    </style>
+</resources>

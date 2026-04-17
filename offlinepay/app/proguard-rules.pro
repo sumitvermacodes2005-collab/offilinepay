@@ -1,0 +1,1 @@
+-keep class com.offlinepay.app.data.model.** { *; }
