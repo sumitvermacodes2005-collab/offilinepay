@@ -8,10 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: offilinepay   # ✅ correct folder + persists
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,10 +25,14 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gradle
 
       - name: Generate Gradle Wrapper
-        run: gradle wrapper --gradle-version 7.6
+        run: |
+          cd offilinepay
+          gradle wrapper --gradle-version 7.6
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: |
+          cd offilinepay
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
