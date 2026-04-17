@@ -24,15 +24,17 @@ jobs:
       - name: Install Gradle
         run: sudo apt-get update && sudo apt-get install -y gradle
 
-      # 🔥 IMPORTANT: force modern Gradle (compatible with Java 17)
-      - name: Generate Modern Gradle Wrapper
-        run: gradle wrapper --gradle-version 7.6
+      - name: Go to project folder
+        run: cd offlinepay
+
+      - name: Generate Gradle Wrapper
+        run: cd offlinepay && gradle wrapper --gradle-version 7.6
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: cd offlinepay && ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: app/build/outputs/apk/debug/*.apk
+          path: offlinepay/app/build/outputs/apk/debug/*.apk
