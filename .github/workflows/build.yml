@@ -18,17 +18,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
       - name: Make gradlew executable
-        run: chmod +x offilinepay/gradlew
+        run: chmod +x offlinepay/gradlew
 
       - name: Build Debug APK
-        run: cd offilinepay && ./gradlew assembleDebug --no-daemon
+        # We cd into the correct folder first so gradle finds settings.gradle.kts
+        run: cd offlinepay && ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: offilinepay/app/build/outputs/apk/debug/*.apk
+          # The path starts from the root of the repo
+          path: offlinepay/app/build/outputs/apk/debug/*.apk
