@@ -72,16 +72,18 @@ class PaymentRepository @Inject constructor(
         data class Malformed(val msg: String) : IncomingResult
     }
 
-    suspend fun parseAndVerify(rawJson: String): IncomingResult = try {
-        val token = tokenAdapter.fromJson(rawJson)
-            ?: return IncomingResult.Malformed("null")
-        val payload = signer.verify(token) ?: return IncomingResult.BadSignature
-        if (System.currentTimeMillis() > payload.expiresAtMillis)
-            return IncomingResult.Expired
-        if (dao.byId(payload.txId) != null) return IncomingResult.Duplicate
-        IncomingResult.Ok(token, payload)
-    } catch (t: Throwable) {
-        IncomingResult.Malformed(t.message ?: "parse error")
+    suspend fun parseAndVerify(rawJson: String): IncomingResult {
+        return try {
+            val token = tokenAdapter.fromJson(rawJson)
+                ?: return IncomingResult.Malformed("null")
+            val payload = signer.verify(token) ?: return IncomingResult.BadSignature
+            if (System.currentTimeMillis() > payload.expiresAtMillis)
+                return IncomingResult.Expired
+            if (dao.byId(payload.txId) != null) return IncomingResult.Duplicate
+            IncomingResult.Ok(token, payload)
+        } catch (t: Throwable) {
+            IncomingResult.Malformed(t.message ?: "parse error")
+        }
     }
 
     suspend fun acceptIncoming(token: PaymentToken, payload: TokenPayload): Boolean {
